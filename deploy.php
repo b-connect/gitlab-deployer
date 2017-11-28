@@ -14,8 +14,10 @@ set('application', (getenv('DEPLOY_APP_NAME')) ? getenv('DEPLOY_APP_NAME') : 'ap
 // Project repository
 set('repository', (getenv('DEPLOY_REPOSITORY')) ? getenv('DEPLOY_REPOSITORY') : getenv('CI_REPOSITORY_URL'));
 
+$hostname =  (getenv('DEPLOY_HOSTNAME')) ? getenv('DEPLOY_HOSTNAME') : getenv('CI_ENVIRONMENT_URL');
+$hostname = parse_url($hostname,  PHP_URL_HOST);
 // Set hostname
-set('hostname', (getenv('DEPLOY_HOSTNAME')) ? getenv('DEPLOY_HOSTNAME') : getenv('CI_ENVIRONMENT_URL'));
+set('hostname', $hostname);
 
 // Set hostname
 set('user', (getenv('DEPLOY_USERNAME')) ? getenv('DEPLOY_USERNAME') : 'root');
