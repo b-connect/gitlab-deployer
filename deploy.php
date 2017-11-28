@@ -7,17 +7,8 @@ $repository = getenv('DEPLOY_REPOSITORY');
 $docroot = (getenv('DEPLOY_DOCROOT')) ? getenv('DEPLOY_DOCROOT') : 'docroot';
 $host = getenv('DEPLOY_HOST');
 $user = getenv('DEPLOY_USER');
-$app = getenv('DEPLOY_APPNAME');
+$app = (getenv('DEPLOY_APPNAME')) ? getenv('DEPLOY_APPNAME') : 'app';
 $path = getenv('DEPLOY_PATH');
-
-echo
-  $repository . "\n" .
-  $docroot . "\n" .
-  $host . "\n" .
-  $user . "\n" .
-  $app . "\n" .
-  $path . "\n"
-;
 
 // Project name
 set('application', $app);
