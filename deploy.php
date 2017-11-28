@@ -17,13 +17,20 @@ set('repository', (getenv('DEPLOY_REPOSITORY')) ? getenv('DEPLOY_REPOSITORY') : 
 // Set hostname
 set('hostname', (getenv('DEPLOY_HOSTNAME')) ? getenv('DEPLOY_HOSTNAME') : getenv('CI_ENVIRONMENT_URL'));
 
+// Set hostname
+set('user', (getenv('DEPLOY_USERNAME')) ? getenv('DEPLOY_USERNAME') : 'root');
+
+
 set('hostpath', getenv('DEPLOY_HOST_PATH'));
 
 // Set alias
 set('alias', (getenv('DEPLOY_ALIAS')) ? getenv('DEPLOY_ALIAS') : '');
 
 host('{{hostname}}')
-  ->set('deploy_path','/{{hostpath}}/{{CI_ENVIRONMENT_SLUG}}');
+  ->set('deploy_path','/{{hostpath}}/{{CI_ENVIRONMENT_SLUG}}')
+  ->user('{{user}}')
+  ->addSshOption('UserKnownHostsFile', '/dev/null')
+  ->addSshOption('StrictHostKeyChecking', 'no');
 
 // Shared files/dirs between deploys
 set('shared_files', [
