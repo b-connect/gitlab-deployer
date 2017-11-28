@@ -2,7 +2,7 @@ FROM composer:latest
 
 ADD composer.json /composer.json
 WORKDIR /
-RUN apk add --update openssh which
+RUN apk add --update openssh util-linux
 RUN composer install
 ADD ./runner.sh /runner.sh
 ADD ./deploy.php /deploy.php
