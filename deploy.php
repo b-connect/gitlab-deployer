@@ -10,6 +10,15 @@ $user = getenv('DEPLOY_USER');
 $app = getenv('DEPLOY_APPNAME');
 $path = getenv('DEPLOY_PATH');
 
+writeln(
+  $repository . "\n" .
+  $docroot . "\n" .
+  $host . "\n" .
+  $user . "\n" .
+  $app . "\n" .
+  $path . "\n"
+);
+
 // Project name
 set('application', $app);
 
