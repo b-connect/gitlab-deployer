@@ -53,7 +53,7 @@ set('hostnames', function() {
 set('keep_releases', 1);
 set('drupal_site', 'default');
 
-task('deploy2', [
+task('deploy', [
   'deploy:info',
   'deploy:prepare',
   'deploy:lock',
@@ -81,7 +81,6 @@ task('docksal:setup', function() {
 
 task('drush:install', function() {
   if (test('[ ! -f {{release_path}}/.docksal/docksal-local.env ]')) {
-    run('touch {{release_path}}/.docksal/docksal-local.env');
     run('echo "VIRTUAL_HOST={{hostnames}}\n COMPOSE_PROJECT_NAME={{hostname}}" > {{deploy_path}}/.docksal/docksal-local.env');
   }
 });
