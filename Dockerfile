@@ -1,6 +1,9 @@
 FROM composer:latest
 
-RUN composer global require deployer/deployer:"^6.0"
+ADD composer.json /composer.json
+WORKDIR /
+RUN apk add --update openssh which
+RUN composer install
 ADD ./runner.sh /runner.sh
 ADD ./deploy.php /deploy.php
 RUN chmod +x /runner.sh

@@ -1,0 +1,12 @@
+{
+    "name": "bconnect/gitlab-deployer",
+    "require": {
+        "deployer/deployer": "^6.0"
+    },
+    "authors": [
+        {
+            "name": "Erik Seifert",
+            "email": "erik.seifert@b-connect.de"
+        }
+    ]
+}
