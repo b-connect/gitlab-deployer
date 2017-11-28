@@ -1,0 +1,1 @@
+dep deploy --tag="${CI_COMMIT_TAG}"
