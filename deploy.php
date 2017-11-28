@@ -3,12 +3,12 @@ namespace Deployer;
 
 require 'recipe/drupal8.php';
 
-$repository = getenv('REPOSITORY');
-$docroot = (getenv('DOCROOT')) ? getenv('DOCROOT') : 'docroot';
-$host = getenv('HOST');
-$user = getenv('USER');
-$app = getenv('APPNAME');
-$path = getenv('PATH');
+$repository = getenv('DEPLOY_REPOSITORY');
+$docroot = (getenv('DEPLOY_DOCROOT')) ? getenv('DEPLOY_DOCROOT') : 'docroot';
+$host = getenv('DEPLOY_HOST');
+$user = getenv('DEPLOY_USER');
+$app = getenv('DEPLOY_APPNAME');
+$path = getenv('DEPLOY_PATH');
 
 // Project name
 set('application', $app);
