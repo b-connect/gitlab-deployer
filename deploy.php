@@ -26,7 +26,7 @@ set('hostpath', getenv('DEPLOY_HOST_PATH'));
 // Set alias
 set('alias', (getenv('DEPLOY_ALIAS')) ? getenv('DEPLOY_ALIAS') : '');
 
-host('{{hostname}}')
+host(get('hostname'))
   ->set('deploy_path','/{{hostpath}}/{{CI_ENVIRONMENT_SLUG}}')
   ->user('{{user}}')
   ->addSshOption('UserKnownHostsFile', '/dev/null')
