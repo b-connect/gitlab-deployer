@@ -1,41 +1,80 @@
 <?php
 namespace Deployer;
 
-require 'recipe/drupal8.php';
+require 'recipe/common.php';
 
-$repository = getenv('DEPLOY_REPOSITORY');
-$docroot = (getenv('DEPLOY_DOCROOT')) ? getenv('DEPLOY_DOCROOT') : 'docroot';
-$host = getenv('DEPLOY_HOST');
-$user = getenv('DEPLOY_USER');
-$app = (getenv('DEPLOY_APPNAME')) ? getenv('DEPLOY_APPNAME') : 'app';
-$path = getenv('DEPLOY_PATH');
+if (!getenv('DEPLOY_HOST_PATH')) {
+  writeln('Please add DEPLOY_HOST_PATH');
+  exit(-1);
+}
 
 // Project name
-set('application', $app);
+set('application', (getenv('DEPLOY_APP_NAME')) ? getenv('DEPLOY_APP_NAME') : 'app');
 
 // Project repository
-set('repository', $repository);
+set('repository', (getenv('DEPLOY_REPOSITORY')) ? getenv('DEPLOY_REPOSITORY') : getenv('CI_REPOSITORY_URL'));
 
-set('docroot', $docroot);
+// Set hostname
+set('hostname', (getenv('DEPLOY_HOSTNAME')) ? getenv('DEPLOY_HOSTNAME') : getenv('CI_ENVIRONMENT_URL'));
 
-// [Optional] Allocate tty for git clone. Default value is false.
-set('git_tty', true);
+set('hostpath', getenv('DEPLOY_HOST_PATH'));
+
+// Set alias
+set('alias', (getenv('DEPLOY_ALIAS')) ? getenv('DEPLOY_ALIAS') : '');
+
+host('{{hostname}}')
+  ->set('deploy_path','/{{hostpath}}/{{CI_ENVIRONMENT_SLUG}}');
 
 // Shared files/dirs between deploys
+set('shared_files', [
+  'sites/{{drupal_site}}/settings.php',
+  'sites/{{drupal_site}}/services.yml',
+  '.docksal/docksal-local.env'
+]);
 
 set('shared_dirs', [
-  '{{docroot}}/sites/{{drupal_site}}/files',
+  'sites/{{drupal_site}}/files',
 ]);
 
-set('shared_files', [
-  '{{docroot}}/sites/{{drupal_site}}/settings.php',
-  '{{docroot}}/sites/{{drupal_site}}/services.yml',
+set('hostnames', function() {
+  if (get('alias')) {
+    return get('hostname') . ',' . get('alias');
+  }
+  return get('hostname');
+});
+
+set('keep_releases', 1);
+set('drupal_site', 'default');
+
+task('deploy2', [
+  'deploy:info',
+  'deploy:prepare',
+  'deploy:lock',
+  'deploy:release',
+  'deploy:update_code',
+  'deploy:shared',
+  'deploy:symlink',
+  'docksal:setup',
+  'docksal:up',
+  'deploy:unlock',
+  'cleanup'
 ]);
 
-// Hosts
-host('dev.b-connect.de')
-    ->user($user)
-    ->set('deploy_path', $path);
+task('docksal:up', function() {
+  cd('{{release_path}}');
+  run('fin up');
+});
 
-// [Optional] if deploy fails automatically unlock.
-after('deploy:failed', 'deploy:unlock');
+task('docksal:setup', function() {
+  if (test('[ ! -f {{release_path}}/.docksal/docksal-local.env ]')) {
+    run('touch {{release_path}}/.docksal/docksal-local.env');
+    run('echo "VIRTUAL_HOST={{hostnames}}" > {{deploy_path}}/.docksal/docksal-local.env');
+  }
+});
+
+task('drush:install', function() {
+  if (test('[ ! -f {{release_path}}/.docksal/docksal-local.env ]')) {
+    run('touch {{release_path}}/.docksal/docksal-local.env');
+    run('echo "VIRTUAL_HOST={{hostnames}}\n COMPOSE_PROJECT_NAME={{hostname}}" > {{deploy_path}}/.docksal/docksal-local.env');
+  }
+});
