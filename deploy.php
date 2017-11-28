@@ -19,6 +19,9 @@ $hostname = parse_url($hostname,  PHP_URL_HOST);
 
 $hostname_docksal =  getenv('CI_ENVIRONMENT_URL');
 $hostname_docksal = parse_url($hostname_docksal,  PHP_URL_HOST);
+
+writeln('HOSTNAME IS : {{hostname}}');
+
 // Set hostname
 set('hostname', $hostname);
 set('hostname_docksal', $hostname_docksal);
@@ -32,7 +35,7 @@ set('hostpath', getenv('DEPLOY_HOST_PATH'));
 // Set alias
 set('alias', (getenv('DEPLOY_ALIAS')) ? getenv('DEPLOY_ALIAS') : '');
 
-host(get('hostname'))
+host($hostname)
   ->set('deploy_path','/{{hostpath}}/{{CI_ENVIRONMENT_SLUG}}')
   ->user('{{user}}')
   ->addSshOption('UserKnownHostsFile', '/dev/null')
