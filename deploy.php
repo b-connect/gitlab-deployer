@@ -14,7 +14,7 @@ set('application', (getenv('DEPLOY_APP_NAME')) ? getenv('DEPLOY_APP_NAME') : 'ap
 // Project repository
 set('repository', (getenv('DEPLOY_REPOSITORY')) ? getenv('DEPLOY_REPOSITORY') : getenv('CI_REPOSITORY_URL'));
 
-$hostname =  (getenv('DEPLOY_HOSTNAME')) ? getenv('DEPLOY_HOSTNAME') : getenv('CI_ENVIRONMENT_URL');
+$hostname = getenv('DEPLOY_HOSTNAME');
 $hostname = parse_url($hostname,  PHP_URL_HOST);
 
 $hostname_docksal =  getenv('CI_ENVIRONMENT_URL');
