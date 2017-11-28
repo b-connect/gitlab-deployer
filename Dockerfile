@@ -1,4 +1,4 @@
-FROM composer/composer:latest
+FROM composer:latest
 
 RUN composer global require deployer/deployer:"^6.0"
 ADD ./runner.sh /runner.sh
