@@ -16,8 +16,12 @@ set('repository', (getenv('DEPLOY_REPOSITORY')) ? getenv('DEPLOY_REPOSITORY') : 
 
 $hostname =  (getenv('DEPLOY_HOSTNAME')) ? getenv('DEPLOY_HOSTNAME') : getenv('CI_ENVIRONMENT_URL');
 $hostname = parse_url($hostname,  PHP_URL_HOST);
+
+$hostname_docksal =  getenv('CI_ENVIRONMENT_URL');
+$hostname_docksal = parse_url($hostname_docksal,  PHP_URL_HOST);
 // Set hostname
 set('hostname', $hostname);
+set('hostname_docksal', $hostname_docksal);
 
 // Set hostname
 set('user', (getenv('DEPLOY_USERNAME')) ? getenv('DEPLOY_USERNAME') : 'root');
@@ -47,9 +51,9 @@ set('shared_dirs', [
 
 set('hostnames', function() {
   if (get('alias')) {
-    return get('hostname') . ',' . get('alias');
+    return get('hostname_docksal') . ',' . get('alias');
   }
-  return get('hostname');
+  return get('hostname_docksal');
 });
 
 set('keep_releases', 1);
@@ -83,6 +87,6 @@ task('docksal:setup', function() {
 
 task('drush:install', function() {
   if (test('[ ! -f {{release_path}}/.docksal/docksal-local.env ]')) {
-    run('echo "VIRTUAL_HOST={{hostnames}}\n COMPOSE_PROJECT_NAME={{hostname}}" > {{deploy_path}}/.docksal/docksal-local.env');
+    run('echo "VIRTUAL_HOST={{hostnames}}\n COMPOSE_PROJECT_NAME={{hostname_docksal}}" > {{deploy_path}}/.docksal/docksal-local.env');
   }
 });
