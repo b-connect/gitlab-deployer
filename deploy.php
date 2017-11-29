@@ -20,6 +20,7 @@ $hostname_docksal = parse_url($hostname_docksal,  PHP_URL_HOST);
 // Set hostname
 set('hostname', getenv('DEPLOY_HOSTNAME'));
 set('hostname_docksal', $hostname_docksal);
+set('git_tty', false);
 
 echo "HOSTNAME IS: " . getenv('DEPLOY_HOSTNAME');
 
