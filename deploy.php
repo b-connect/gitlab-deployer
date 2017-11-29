@@ -21,7 +21,7 @@ $hostname_docksal = parse_url($hostname_docksal,  PHP_URL_HOST);
 set('hostname', getenv('DEPLOY_HOSTNAME'));
 set('hostname_docksal', $hostname_docksal);
 
-echo "HOSTNAME IS: " . $hostname;
+echo "HOSTNAME IS: " . getenv('DEPLOY_HOSTNAME');
 
 // Set hostname
 set('user', (getenv('DEPLOY_USERNAME')) ? getenv('DEPLOY_USERNAME') : 'root');
