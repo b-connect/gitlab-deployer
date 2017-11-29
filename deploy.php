@@ -35,7 +35,7 @@ set('alias', (getenv('DEPLOY_ALIAS')) ? getenv('DEPLOY_ALIAS') : '');
 
 host(get('hostname'))
   ->set('deploy_path','/{{hostpath}}/{{CI_ENVIRONMENT_SLUG}}')
-  ->user('{{user}}');
+  ->user('root');
 
 // Shared files/dirs between deploys
 set('shared_files', [
