@@ -11,6 +11,8 @@ if (!getenv('DEPLOY_HOST_PATH')) {
 // Project name
 set('application', (getenv('DEPLOY_APP_NAME')) ? getenv('DEPLOY_APP_NAME') : 'app');
 
+set('env', getenv('CI_ENVIRONMENT_SLUG'));
+
 // Project repository
 set('repository', (getenv('DEPLOY_REPOSITORY')) ? getenv('DEPLOY_REPOSITORY') : getenv('CI_REPOSITORY_URL'));
 
@@ -34,7 +36,7 @@ set('hostpath', getenv('DEPLOY_HOST_PATH'));
 set('alias', (getenv('DEPLOY_ALIAS')) ? getenv('DEPLOY_ALIAS') : '');
 
 host(get('hostname'))
-  ->set('deploy_path','/{{hostpath}}/{{CI_ENVIRONMENT_SLUG}}')
+  ->set('deploy_path','/{{hostpath}}/{{env}}')
   ->user('root');
 
 // Shared files/dirs between deploys
