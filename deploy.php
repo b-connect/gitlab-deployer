@@ -35,6 +35,7 @@ set('alias', (getenv('DEPLOY_ALIAS')) ? getenv('DEPLOY_ALIAS') : '');
 host(get('hostname'))
   ->set('deploy_path','/{{hostpath}}/{{CI_ENVIRONMENT_SLUG}}')
   ->user('{{user}}')
+  ->identityFile('/root/.ssh/id_rsa')
   ->addSshOption('UserKnownHostsFile', '/dev/null')
   ->addSshOption('StrictHostKeyChecking', 'no');
 
